@@ -37,4 +37,11 @@ Route::group(['namespace' => 'Api'], function()
             Route::get('/authentication/refresh_token', 'AuthenticationController@refresh_token');
         });
     });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Routes for exercises service
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/exercises', 'ExercisesController@index');
 });
