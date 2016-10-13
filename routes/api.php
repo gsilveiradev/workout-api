@@ -43,5 +43,9 @@ Route::group(['namespace' => 'Api'], function()
     | Routes for exercises service
     |--------------------------------------------------------------------------
     */
+    Route::delete('/exercises/{id}', 'ExercisesController@destroy');
+    Route::put('/exercises/{id}', 'ExercisesController@update');
+    Route::get('/exercises/{id}', 'ExercisesController@show');
+    Route::post('/exercises', 'ExercisesController@store');
     Route::get('/exercises', 'ExercisesController@index');
 });
