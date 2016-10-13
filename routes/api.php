@@ -48,4 +48,15 @@ Route::group(['namespace' => 'Api'], function()
     Route::get('/exercises/{id}', 'ExercisesController@show');
     Route::post('/exercises', 'ExercisesController@store');
     Route::get('/exercises', 'ExercisesController@index');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Routes for plans service
+    |--------------------------------------------------------------------------
+    */
+    Route::delete('/plans/{id}', 'PlansController@destroy');
+    Route::put('/plans/{id}', 'PlansController@update');
+    Route::get('/plans/{id}', 'PlansController@show');
+    Route::post('/plans', 'PlansController@store');
+    Route::get('/plans', 'PlansController@index');
 });
