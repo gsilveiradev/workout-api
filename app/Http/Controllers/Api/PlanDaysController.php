@@ -5,11 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator;
-use Hash;
 use App\Http\Requests;
-use App\User;
+use App\PlanDay;
 
-class UsersController extends Controller
+class PlanDaysController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +17,12 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::with('plans')->get();
+        $plan_days = PlanDay::with('exerciseInstances')->with('plan')
+            ->orderBy('plan_id', 'ASC')
+            ->orderBy('order', 'ASC')
+            ->get();
 
-        return response()->json(compact('users'));
+        return response()->json(compact('plan_days'));
     }
 
     /**
@@ -31,11 +33,11 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        $plan_day = PlanDay::findOrFail($id);
 
-        $user->load('plans');
+        $plan_day->load('exerciseInstances')->load('plan');
 
-        return response()->json(compact('user'));
+        return response()->json(compact('plan_day'));
     }
 
     /**
@@ -47,9 +49,9 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'email' => 'required|email|unique:users,email'
+            'day_name' => 'required',
+            'order' => 'required',
+            'plan_id' => 'required|exists:plans,id'
         ]);
 
         if ($validation->fails()) {
@@ -60,14 +62,13 @@ class UsersController extends Controller
             ), 422);
         }
 
-        $user = new User;
-        $user->firstname = $request->firstname;
-        $user->lastname = $request->lastname;
-        $user->email = $request->email;
-        $user->password = Hash::make('password');
-        $user->save();
+        $plan_day = new PlanDay;
+        $plan_day->day_name = $request->day_name;
+        $plan_day->order = $request->order;
+        $plan_day->plan_id = $request->plan_id;
+        $plan_day->save();
 
-        return response()->json(compact('user'));
+        return response()->json(compact('plan_day'));
     }
 
     /**
@@ -80,9 +81,9 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $validation = Validator::make($request->all(), [
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'email' => 'required|email'
+            'day_name' => 'required',
+            'order' => 'required',
+            'plan_id' => 'required|exists:plans,id'
         ]);
 
         if ($validation->fails()) {
@@ -93,38 +94,13 @@ class UsersController extends Controller
             ), 422);
         }
 
-        $user = User::findOrFail($id);
-        $user->firstname = $request->firstname;
-        $user->lastname = $request->lastname;
-        $user->email = $request->email;
-        $user->save();
+        $plan_day = PlanDay::findOrFail($id);
+        $plan_day->day_name = $request->day_name;
+        $plan_day->order = $request->order;
+        $plan_day->plan_id = $request->plan_id;
+        $plan_day->save();
 
-        return response()->json(compact('user'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update_plans(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
-        
-        if ($request->plans) {
-
-            $user->plans()->sync($request->plans);
-
-        } else {
-
-            $user->plans()->detach();
-        }
-
-        $user->load('plans');
-
-        return response()->json(compact('user'));
+        return response()->json(compact('plan_day'));
     }
 
     /**
@@ -135,8 +111,8 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        $plan_day = PlanDay::findOrFail($id);
+        $plan_day->delete();
 
         return response()->json(array('message' => 'Ok!'), 200);
     }

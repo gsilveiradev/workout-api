@@ -22,7 +22,7 @@ class PlanDay extends Model
      */
     public function exerciseInstances()
     {
-        return $this->hasMany('App\ExerciseInstance');
+        return $this->hasMany('App\ExerciseInstance', 'day_id');
     }
 
     /**
