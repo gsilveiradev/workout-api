@@ -59,4 +59,15 @@ Route::group(['namespace' => 'Api'], function()
     Route::get('/plans/{id}', 'PlansController@show');
     Route::post('/plans', 'PlansController@store');
     Route::get('/plans', 'PlansController@index');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Routes for users service
+    |--------------------------------------------------------------------------
+    */
+    Route::delete('/users/{id}', 'UsersController@destroy');
+    Route::put('/users/{id}', 'UsersController@update');
+    Route::get('/users/{id}', 'UsersController@show');
+    Route::post('/users', 'UsersController@store');
+    Route::get('/users', 'UsersController@index');
 });
