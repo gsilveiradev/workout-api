@@ -65,6 +65,8 @@ Route::group(['namespace' => 'Api'], function()
     | Routes for plan_days service
     |--------------------------------------------------------------------------
     */
+    Route::delete('/plan_days/{id}/exercises/{exercise_instance_id}', 'PlanDaysController@destroy_exercise');
+    Route::put('/plan_days/{id}/exercises', 'PlanDaysController@update_exercises');
     Route::delete('/plan_days/{id}', 'PlanDaysController@destroy');
     Route::put('/plan_days/{id}', 'PlanDaysController@update');
     Route::get('/plan_days/{id}', 'PlanDaysController@show');
