@@ -1,3 +1,7 @@
+# Workout API
+
+This project was built with Laravel Framework 5.3.
+
 ## Laravel PHP Framework
 
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
@@ -12,7 +16,7 @@ Documentation for the framework can be found on [Laravel website](http://laravel
 
 ## Install the Project
 
-Clone the repository and then do the composer install:
+Clone repository and then do the composer install:
 
 ```bash
 composer install
@@ -21,6 +25,7 @@ composer install
 Configure your ```.env``` file. Do not forget to create a MySQL database and configure it in .env file.
 
 In order to send e-mails with Maildocker service, you will need to configure the mail drive and maildocker keys:
+
 ```bash
 MAIL_DRIVER=maildocker
 MAILDOCKER_API_KEY=__Your_api_key_here__
@@ -29,9 +34,26 @@ MAILDOCKER_API_SECRET=__Your_api_secret_here__
 
 ### Migrations
 
-All the entities and tables are represented by migrations in Laravel.
+All the entities and tables are represented by Models and are created in db with Laravel migrations.
 
 There is a database model in the root of this project ```database_model.mwb```. Use the MySQLWorkbench tool to open it.
+
+Models are in:
+
+```
+app/
+   > Exercise.php
+   > ExerciseInstance.php
+   > Plan.php
+   > PlanDay.php
+   > User.php
+```
+
+Migrations are in:
+
+```
+database/migrations/*
+```
 
 Run migrations and Seed (to create a dummy data)
 
