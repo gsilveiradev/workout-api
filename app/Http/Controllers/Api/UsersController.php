@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator;
 use Hash;
+use Mail;
+use App\Mail\UserPlanAssigned;
 use App\Http\Requests;
 use App\User;
 
@@ -115,6 +117,8 @@ class UsersController extends Controller
         
         if ($request->plans) {
 
+            Mail::to($user->email)->send(new UserPlanAssigned());
+
             $user->plans()->sync($request->plans);
 
         } else {
@@ -136,6 +140,7 @@ class UsersController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+        $user->plans()->detach();
         $user->delete();
 
         return response()->json(array('message' => 'Ok!'), 200);

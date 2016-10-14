@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator;
+use Mail;
+use App\Mail\UserPlanDeleted;
 use App\Http\Requests;
 use App\Plan;
 
@@ -107,6 +109,21 @@ class PlansController extends Controller
     public function destroy($id)
     {
         $plan = Plan::findOrFail($id);
+
+        foreach ($plan->users as $user) {
+
+            Mail::to($user->email)->send(new UserPlanDeleted());
+        }
+
+        $plan_days = $plan->planDays()->get();
+
+        foreach ($plan_days as $plan_day) {
+
+            $plan_day->exerciseInstances()->delete();
+            $plan_day->delete();
+        }
+
+        $plan->users()->detach();
         $plan->delete();
 
         return response()->json(array('message' => 'Ok!'), 200);

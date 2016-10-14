@@ -34,5 +34,9 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
+    'maildocker' => [
+        'api_key' => env('MAILDOCKER_API_KEY'),
+        'api_secret' => env('MAILDOCKER_API_SECRET'),
+    ],
 
 ];
